@@ -1,0 +1,2 @@
+# FriggaVision
+FR sol
