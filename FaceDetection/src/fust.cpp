@@ -35,6 +35,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "classifier/lab_boosted_classifier.h"
 #include "classifier/surf_mlp.h"
@@ -68,14 +69,18 @@ bool FuStDetector::LoadModel(const std::string & model_path) {
     seeta::fd::ClassifierType classifier_type;
 
     model_file.read(reinterpret_cast<char*>(&num_hierarchy_), sizeof(int32_t));
+    std::cout << "num of hierarchy = " << num_hierarchy_ << std::endl;
     for (int32_t i = 0; is_loaded && i < num_hierarchy_; i++) {
       model_file.read(reinterpret_cast<char*>(&hierarchy_size),
         sizeof(int32_t));
       hierarchy_size_.push_back(hierarchy_size);
+      std::cout << "herarchy " << i << " size " << hierarchy_size << std::endl;
 
       for (int32_t j = 0; is_loaded && j < hierarchy_size; j++) {
         model_file.read(reinterpret_cast<char*>(&num_stage), sizeof(int32_t));
         num_stage_.push_back(num_stage);
+        std::cout << "stage "<< num_stage << std::endl;
+
 
         for (int32_t k = 0; is_loaded && k < num_stage; k++) {
           model_file.read(reinterpret_cast<char*>(&type_id), sizeof(int32_t));
@@ -87,6 +92,11 @@ bool FuStDetector::LoadModel(const std::string & model_path) {
             reader->Read(&model_file, classifier.get());
           if (is_loaded) {
             model_.push_back(classifier);
+            if (classifier->type() == seeta::fd::ClassifierType::LAB_Boosted_Classifier) {
+              std::cout << "LAB" << std::endl;
+            } else {
+              std::cout << "MLP" << std::endl;
+            }
             std::shared_ptr<seeta::fd::FeatureMap> feat_map;
             if (cls2feat_idx_.count(classifier_type) == 0) {
               feat_map_.push_back(CreateFeatureMap(classifier_type));
@@ -131,8 +141,12 @@ std::vector<seeta::FaceInfo> FuStDetector::Detect(
   // Sliding window
 
   std::vector<std::vector<seeta::FaceInfo> > proposals(hierarchy_size_[0]);
+
+  std::cout << "LAB model number=" << hierarchy_size_[0] << std::endl;
+
   std::shared_ptr<seeta::fd::FeatureMap> & feat_map_1 =
     feat_map_[cls2feat_idx_[model_[0]->type()]];
+
 
   while (img_scaled != nullptr) {
     feat_map_1->Compute(img_scaled->data, img_scaled->width,
@@ -154,6 +168,11 @@ std::vector<seeta::FaceInfo> FuStDetector::Detect(
 
         for (int32_t i = 0; i < hierarchy_size_[0]; i++) {
           if (model_[i]->Classify(&score)) {
+            // if (model_[i]->type() == seeta::fd::ClassifierType::LAB_Boosted_Classifier) {
+              // std::cout << "model i=" << i << "classier type is LAB" << std::endl; 
+            // } else {
+              // std::cout << "model i=" << i << "classier type is SURF" << std::endl; 
+            // }
             wnd_info.score = static_cast<double>(score);
             proposals[i].push_back(wnd_info);
           }

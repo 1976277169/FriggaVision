@@ -102,6 +102,8 @@ int main(int argc, char** argv) {
     face_rect.width = faces[i].bbox.width;
     face_rect.height = faces[i].bbox.height;
 
+    cout << "FACE " << face_rect.x << ' ' << face_rect.y << ' ' << face_rect.width << ' ' << face_rect.height << endl;
+
     cv::rectangle(img, face_rect, CV_RGB(0, 0, 255), 4, 8, 0);
   }
 
