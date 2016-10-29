@@ -28,6 +28,7 @@
  * Note: the above information must be kept whenever or wherever the codes are used.
  *
  */
+// (C) 2016 chenbingfeng
 
 #include "fust.h"
 
@@ -142,8 +143,6 @@ std::vector<seeta::FaceInfo> FuStDetector::Detect(
 
   std::vector<std::vector<seeta::FaceInfo> > proposals(hierarchy_size_[0]);
 
-  std::cout << "LAB model number=" << hierarchy_size_[0] << std::endl;
-
   std::shared_ptr<seeta::fd::FeatureMap> & feat_map_1 =
     feat_map_[cls2feat_idx_[model_[0]->type()]];
 
@@ -168,11 +167,6 @@ std::vector<seeta::FaceInfo> FuStDetector::Detect(
 
         for (int32_t i = 0; i < hierarchy_size_[0]; i++) {
           if (model_[i]->Classify(&score)) {
-            // if (model_[i]->type() == seeta::fd::ClassifierType::LAB_Boosted_Classifier) {
-              // std::cout << "model i=" << i << "classier type is LAB" << std::endl; 
-            // } else {
-              // std::cout << "model i=" << i << "classier type is SURF" << std::endl; 
-            // }
             wnd_info.score = static_cast<double>(score);
             proposals[i].push_back(wnd_info);
           }

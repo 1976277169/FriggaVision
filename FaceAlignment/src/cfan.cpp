@@ -29,6 +29,8 @@
  *
  */
 
+// (C) 2016 chenbingfeng 
+// 16-10-30 fix build error under macOS
 
 #include "cfan.h"
 #include <string.h>
