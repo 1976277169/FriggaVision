@@ -64,17 +64,21 @@ int main(int argc, char** argv)
   is.open(argv[3]);
   std::ofstream os;
   os.open(argv[4]);
+  int cnt = 0;
   while ((is.rdstate() & std::ifstream::eofbit) == 0) {
     std::string line;
     std::getline(is, line);
-    std::cout << line.c_str() << std::endl;
+    cnt++;
+    if (cnt % 7 == 0)
+      std::cout << "\r>>>> progress " << cnt << std::flush;
+
 
   //load image
   IplImage *img_grayscale = NULL;
   img_grayscale = cvLoadImage(line.c_str(), 0);
   if (img_grayscale == NULL)
   {
-    std::cout << "error img null" << std::endl;
+    std::cout << std::endl << "error img null" << std::endl;
     continue;
   }
 
@@ -134,6 +138,7 @@ int main(int argc, char** argv)
   cvReleaseImage(&img_grayscale);
   delete[]data;
   }
+  std::cout << std::endl << "EnD " << cnt << std::endl;
 
 return 0;
 }
