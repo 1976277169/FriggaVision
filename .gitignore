@@ -91,3 +91,6 @@ ENV/
 .vscode
 FaceAlignment/build
 FaceDetection/build
+*DS_Store
+FaceAlignment/webface-sample/*.r.jpg
+FaceAlignment/test_result.txt
