@@ -2,6 +2,9 @@
 
 [![License](https://img.shields.io/badge/license-BSD-blue.svg)](../LICENSE)
 
+![a](001.jpg.r.jpg)![a](002.jpg.r.jpg)
+
+
 ### Description
 Instead of a straightforward application of deep network, SeetaFace Alignment implements a Coarse-to-Fine Auto-encoder
 Networks (CFAN) approach, which cascades a few Stacked Auto-encoder Networks (SANs) to progressively approach the accurate locations of the facial landmarks. The algorithm details can be found in our ECCV-2014 paper [CFAN](#citation). The released SeetaFace Alignment is trained with more than 23,000 images and can accurately detect five facial landmarks, i.e., two eye centers, nose tip and two mouth corners. Please note that this implementation is slightly different from that described in the corresponding paper: only two stages are cascaded for the purpose of higher speed (more than 200 fps on I7 desktop CPU). 
