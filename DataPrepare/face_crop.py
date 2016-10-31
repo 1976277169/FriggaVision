@@ -8,19 +8,14 @@ import os
 import sys
 import skimage.transform
 import skimage.io
-# from skimage import transform as tf
 import numpy as np
 
 
-#use webface-tiny/6549862/016.jpg as target
-#94.3201 109.413 157.943 109.31 125.96 146.295 94.5787 172.477 153.157 172.157
 ALIGN_Y_OFF = 0
 ALIGN_TARGET = np.array([[93.0, 109.0 + ALIGN_Y_OFF],[157.0, 109.0 + ALIGN_Y_OFF],[125.0, 172.0 + ALIGN_Y_OFF]])
-# ALIGN_TARGET = np.array([[94, 158, 124],[109, 109, 172]])
-CROP_SCALER = 1.0
+CROP_SCALER = 0.333
 
 def simiTransCrop(img_src, img_des, rect, marks, des_size):
-    print img_src
     des_path = os.path.dirname(img_des)
     if not os.path.exists(des_path):
         os.system("mkdir -p '%s'" % des_path )
@@ -30,24 +25,19 @@ def simiTransCrop(img_src, img_des, rect, marks, des_size):
     left_eye = marks[1]
     mouth_center = [(marks[3][0] + marks[4][0])*0.5, (marks[3][1] + marks[4][1])*0.5]
     global ALIGN_TARGET, CROP_SCALER
-    print marks
     srcarr = np.array([ right_eye, left_eye, mouth_center ])
-    # srcarr = np.array([ [right_eye[0], left_eye[0], mouth_center[0] ],  \
-                        #  [right_eye[1], left_eye[1], mouth_center[1] ] ])
-    print srcarr, ALIGN_TARGET
-    # trans = cv2.estimateRigidTransform(srcarr, ALIGN_TARGET, False)
     tform = skimage.transform.estimate_transform('similarity', ALIGN_TARGET, srcarr)
-    print tform
+    # print tform
     img_obj = skimage.io.imread(img_src)
     img_traned = skimage.transform.warp(img_obj, tform)
     img_scaled = skimage.transform.rescale(img_traned, CROP_SCALER)
-    img_croped = img_scaled[37:213, 37:213]
+    img_croped = img_scaled[9:73, 9:73]
     
     skimage.io.imsave(img_des, img_croped)
 
 def main():
 
-    f_result = open('align_result.txt', 'r')
+    f_result = open('washed_align_result.txt', 'r')
     align_result = f_result.readlines()
     f_result.close()
 
