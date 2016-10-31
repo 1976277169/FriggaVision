@@ -50,6 +50,7 @@ int main(int argc, char** argv)
     std::cout << "USAGE face_fa detect_model align_model image_list_fn out_list_fn" << std::endl;
     return 0;
   }
+  bool need_disp = argc == 6; // if need virtual
   // Initialize face detection model
   seeta::FaceDetection detector(argv[1]);
   detector.SetMinFaceSize(40);
@@ -117,24 +118,28 @@ int main(int argc, char** argv)
   seeta::FacialLandmark points[5];
   point_detector.PointDetectLandmarks(image_data, faces[0], points);
 
-  // Visualize the results
-  // IplImage *img_color = cvLoadImage(line.c_str(), 1);
-
-  // cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
+  // write out results
   os << line << " " << faces[0].bbox.x << " " << faces[0].bbox.y << " " << faces[0].bbox.width << " " << faces[0].bbox.height;
-
   for (int i = 0; i<pts_num; i++)
   {
-    // cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
     os << " " << points[i].x << " " << points[i].y;
   }
   os << std::endl;
-  // cvSaveImage((line + ".r.jpg").c_str(), img_color);
 
+  // Visualize the results
+  if (need_disp) {
+    IplImage *img_color = cvLoadImage(line.c_str(), 1);
+    cvRectangle(img_color, cvPoint(faces[0].bbox.x, faces[0].bbox.y), cvPoint(faces[0].bbox.x + faces[0].bbox.width - 1, faces[0].bbox.y + faces[0].bbox.height - 1), CV_RGB(255, 0, 0));
+    for (int i = 0; i<pts_num; i++)
+    {
+      cvCircle(img_color, cvPoint(points[i].x, points[i].y), 2, CV_RGB(0, 255, 0), CV_FILLED);
+    }
+    cvSaveImage((line + ".r.jpg").c_str(), img_color);
+    cvReleaseImage(&img_color);
+  }
   
 
   // Release memory
-  // cvReleaseImage(&img_color);
   cvReleaseImage(&img_grayscale);
   delete[]data;
   }

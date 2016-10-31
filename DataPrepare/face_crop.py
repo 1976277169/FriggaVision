@@ -54,7 +54,7 @@ def main():
     dir_prefix = "cropped"
     os.system("rm -rf '%s'" % dir_prefix)
     os.mkdir(dir_prefix)
-    print "starting croping ... "
+    print "start cropping ... "
     total = len(align_result)
     curr = 0
     for line in align_result:
