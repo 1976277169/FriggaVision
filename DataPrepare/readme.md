@@ -15,6 +15,7 @@ Scripts to prepare face data for CNN training.
 
 ![origin](_res/020-origin.jpg) ==>
 ![after](_res/020-cropped.jpg)(64x64)
+
 ![washed](_res/014-washed.jpg) <== profile view will be  washed away
 
 ###Liscense
