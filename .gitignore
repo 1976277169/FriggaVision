@@ -94,3 +94,6 @@ FaceDetection/build
 *DS_Store
 FaceAlignment/webface-sample/*.r.jpg
 FaceAlignment/test_result.txt
+DataPrepare/align_result*
+DataPrepare/image_list.txt
+DataPrepare/cropped
