@@ -63,8 +63,8 @@ class DeepID():
        
         #在prjpath下新建名为num的文件夹,将配置以及生成的文件放在该文件夹下
         #在prjpath下新建num文件夹
-        if not os.path.exists(prjpath+str(num)):    
-            os.makedirs(prjpath+str(num))
+        # if not os.path.exists(prjpath+str(num)):    
+            # os.makedirs(prjpath+str(num))
         
         self.net_proto_model=prjpath+prj+'_train_test.prototxt'
         self.solver_proto_model=prjpath+prj+'_solver.prototxt'
@@ -183,21 +183,21 @@ class DeepID():
     
         _command+='echo "Done"'
     
-        DeepID.fileopt(self.shcreate,_command)
+        DeepID.fileopt("create.sh",_command)
 
-        os.system(_command)
+        # os.system(_command)
 
     def compute_imgmean(self):
         _command=self.caffepath+'build/tools/compute_image_mean '+self.lmdb_train+' '+self.imgmean
-        DeepID.fileopt(self.shimgmean,_command)
+        DeepID.fileopt("imgmean.sh",_command)
 
-        os.system(_command)
+        # os.system(_command)
     
     def draw_net(self):
         _command='python '+self.caffepath+'python/draw_net.py '+self.net_proto_model+' '+self.netimg
-        DeepID.fileopt(self.shdrawnet,_command)
+        DeepID.fileopt("draw_net.sh",_command)
 
-        os.system(_command)
+        # os.system(_command)
    
     def train(self):
         #将project_train_test.prototxt中lmdb和imgmean替换
@@ -238,8 +238,8 @@ class DeepID():
  
         out=r' 2>&1 |tee '
         _command+=self.caffepath+'/build/tools/caffe train '+'--solver='+self.solver_proto+' '+out+self.log_train
-        DeepID.fileopt(self.shtrain,_command)
-        os.system(_command)
+        DeepID.fileopt("train.sh",_command)
+        # os.system(_command)
         
     def resume(self,num):
         #将project_train_test.prototxt中lmdb和imgmean替换
@@ -280,18 +280,18 @@ class DeepID():
  
         out=r' 2>&1 |tee '
         _command+=self.caffepath+'/build/tools/caffe train '+'--solver='+self.solver_proto+' '+out+self.log_train
-        DeepID.fileopt(self.shtrain,_command)
+        DeepID.fileopt("resume.sh",_command)
         
     def test(self,iternum):
         out=r' 2>&1 |tee '
         _command=self.caffepath+'/build/tools/caffe test --model='+self.net_proto+' --weights='+self.snapshot_pre+'_iter_'+str(iternum)+'.caffemodel'+out+log_test
-        DeepID.fileopt(self.shtest,_command)
-        os.system(_command)
+        DeepID.fileopt("test.sh",_command)
+        # os.system(_command)
 def demo(num):
     deepID=DeepID('deepID','/home/ikode/caffe-master/','/home/ikode/caffe-master/examples/deepID/','/media/ikode/Document/big_materials/document/deep_learning/caffe/face_datasets/webface/croped/',num)
     ratio=9
 
-    deepID.div_data(ratio)
+    # deepID.div_data(ratio)
 
     deepID.create(64,64)
 
@@ -303,5 +303,5 @@ def demo(num):
 
 if __name__=='__main__':
 
-    demo(1000)
+    demo(10000)
     #demo后面的数字是训练的人数（1-10575）

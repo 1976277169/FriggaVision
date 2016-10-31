@@ -5,5 +5,6 @@ FaceDetection is from SeetaFace mainly. We add feature of angle selection, which
 
 FaceAlignment is from SeetaFace too. We fix some build errors under macOS, and add some webface sample image for testing. The model is working, but not working well in difficult situation. One TODO is to find more accurate Alignment tool even taking more time, for we use it as data preprocessing not real-time applicaton.
 
-The target:
-We use FaceDetection/FaceAlignment to preprocess image data for training of DeepID.
+DataPrepare contains some tools  to preprocess image data for training of DeepID using above staff.
+
+FaceIdentification is simple DeepId(1st gen) caffe code. The network is somehow outdated, but it should works. Fresh meat is welcome!
