@@ -1,10 +1,31 @@
 # FriggaVision
 Our face identification develop toolkit.
 
-FaceDetection is from SeetaFace mainly. We add feature of angle selection, which can help us wash the train data, e.g., rejecting all face > 45 degree. But the model provided by SeetaFace has different structure from which they have descriped in the FuSt paper. So the angle selection can not work, because there are only 3 LAB cascaded unit here. What a pity. So we have a TODO to build our own Detection system.
+##Intro
+###FaceDetection 
+Which is from [SeetaFace](https://github.com/seetaface/SeetaFaceEngine) mainly. We add feature of angle selection, which can help us wash the train data, e.g., rejecting all face > 45 degree. But the model provided by SeetaFace has different structure from which they have descriped in the FuSt paper. So the angle selection can not work, because there are only 3 LAB cascaded unit there. What a pity. We need to build an cascaded Face Detection tool  with more accurate performance in profile view situation later.
 
-FaceAlignment is from SeetaFace too. We fix some build errors under macOS, and add some webface sample image for testing. The model is working, but not working well in difficult situation. One TODO is to find more accurate Alignment tool even taking more time, for we use it as data preprocessing not real-time applicaton.
+###FaceAlignment
 
-DataPrepare contains some tools  to preprocess image data for training of DeepID using above staff.
+Which is from SeetaFace too. We fix some build errors under macOS and ubuntu 1604. And add some webface sample image for testing. The model is working, but bad in difficult situation. When time is on our side, we will find an accurate Alignment tool even with bad speed performance(e.g, CNN based), because we use it at data preprocessing not in real-time applicaton.
 
-FaceIdentification is simple DeepId(1st gen) caffe code. The network is somehow outdated, but it should works. Fresh meat is welcome!
+###DataPrepare
+Here contains some tools  to preprocess image data for training of DeepID using above staff. The main target is [Webface dataset](http://www.cbsr.ia.ac.cn/english/CASIA-WebFace-Database.html). The dataset has 5% super profile view image, which is bad for training an network to fetch feature out of mainly frontal faces. For that, we take a wash step there.
+
+###FaceIdentification
+Finlly the simple caffe [DeepId(1st gen)](http://mmlab.ie.cuhk.edu.hk/pdf/YiSun_CVPR14.pdf) code. The network is somehow outdated(still use LRN), but it should works. Fresh meat is welcome!
+
+##Build Guide
+Follow DataPrepare/readme.md
+
+##Results
+###test1
+Network and solver is at FaceIdentification/test1/.Only one pitch and one network is used, the pitch is generally cover the total face. 
+
+We use 10000people, and SGD optimization with 500k interation, the training validation accuracy is at 65.5%, which is the same as the paper told.
+
+TODO here
+
+##LISCENSE
+
+MIT
