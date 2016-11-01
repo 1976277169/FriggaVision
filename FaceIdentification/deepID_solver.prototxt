@@ -1,7 +1,8 @@
-net: "examples/deepID/deepID_train_test.prototxt"
+net: "deepID_train_test.prototxt"
 test_iter: 100
 test_interval: 1000
 
+type: "RMSProp"
 base_lr: 0.001
 lr_policy: "step"
 gamma: 0.95
@@ -12,6 +13,6 @@ weight_decay: 0.0005
 display: 100
 max_iter:  500000
 snapshot:  50000
-snapshot_prefix: "examples/deepID/snapshot"
-solver_mode: CPU
+snapshot_prefix: "./snapshot"
+solver_mode: GPU
 #debug_info: true

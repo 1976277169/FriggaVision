@@ -297,7 +297,7 @@ def demo(num):
 
     deepID.compute_imgmean()
 
-#    deepID.draw_net()
+    deepID.draw_net()
 
     deepID.train()
 

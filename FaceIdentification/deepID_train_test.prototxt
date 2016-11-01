@@ -6,12 +6,12 @@ layer {
   name: "data_1"
   type: "Data"
   data_param {
-    source: "examples/deepID/deepID_train_lmdb"
+    source: "../DataPrepare/webface/train_lmdb"
     backend:LMDB
     batch_size: 128
   }
   transform_param {
-     mean_file: "examples/deepID/mean.binaryproto"
+     mean_file: "../DataPrepare/webface/train_mean.binaryproto"
      mirror: true
   }
   include: { phase: TRAIN }
@@ -23,12 +23,12 @@ layer {
   name: "data_1"
   type: "Data"
   data_param {
-    source: "examples/deepID/deepID_test_lmdb"
+    source: "../DataPrepare/webface/test_lmdb"
     backend:LMDB
     batch_size: 128
   }
   transform_param {
-    mean_file: "examples/deepID/mean.binaryproto"
+    mean_file: "../DataPrepare/webface/train_mean.binaryproto"
     mirror: true
   }
   include: { 
