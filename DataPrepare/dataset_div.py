@@ -25,10 +25,11 @@ def div_data(datapath, people_num, train_fn, test_fn):
 
             for num, filename in enumerate(filenamelist):
                 if num%ratio!=0:
-                    fid_train.write(os.path.join(subdir,filename)+'\t'+str(pid)+'\n')
+                    fid_train.write(os.path.join(subdir,filename)+' '+str(pid)+'\n')
+                    #https://github.com/BVLC/caffe/blob/master/tools/convert_imageset.cpp split with ' ' not \t
                     train_cnt = train_cnt + 1
                 else:
-                    fid_test.write(os.path.join(subdir,filename)+'\t'+str(pid)+'\n')
+                    fid_test.write(os.path.join(subdir,filename)+' '+str(pid)+'\n')
                     test_cnt = test_cnt + 1
         print "total people", len(sorted_num_id), "select-people", people_num, "total-image", train_cnt+test_cnt, "train-image", train_cnt, "test-image", test_cnt 
 
