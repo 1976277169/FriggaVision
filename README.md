@@ -29,7 +29,11 @@ Use lfwcrop_color, cosine distance. The result ROC is below, it's bad but workin
 ![test1](FaceIdentification/test1_roc_crop_lfw_cosine.png)
 
 ###test2
-Use lfw, not cropped, crop by ourself, with DataPrepare's method. And beyasin joint.
+Use lfw, not cropped, crop by ourself, with DataPrepare's method. And Joint Bayesian.
+TODO
+
+###test3
+N pitch + Joint Bayesian
 TODO
 
 ##LISCENSE
