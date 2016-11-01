@@ -101,3 +101,4 @@ DataPrepare/washed_align_result.txt
 DataPrepare/be_washed_images.txt
 DataPrepare/CASIA-WebFace*
 DataPrepare/webface/*
+._*

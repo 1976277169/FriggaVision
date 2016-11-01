@@ -10,7 +10,7 @@ Scripts to prepare face data for CNN training.
 - 4) run face_wash.py to remove face profile with align_result.txt, and the results lay in washed_align_result.txt;
 - 5) run face_crop.py to generate cropped dataset;
 - 6) run dataset_div.py to split as Train/Test set;
-- 7) run create_lmdb.sh to create Caffe's meal;
+- 7) specific your caffe_dir in gen_lmdb_imgmean.sh and run it to create LMDBs;
 - 8) go to train at ../FaceIdentification;
 
 (all generated data will stay in 'webface' dir)
