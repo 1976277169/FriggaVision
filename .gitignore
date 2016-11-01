@@ -103,3 +103,4 @@ DataPrepare/CASIA-WebFace*
 DataPrepare/webface/*
 ._*
 FaceIdentification/snapshot*
+FaceIdentification/lfwcrop*

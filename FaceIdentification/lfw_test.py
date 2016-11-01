@@ -12,6 +12,8 @@ Create on Tues 2015-11-24
 import os
 import sklearn
 import numpy as np
+import matplotlib
+matplotlib.use('Agg') #http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib.pyplot as plt
 import skimage
 import sys
@@ -225,7 +227,7 @@ class DeepIDTest(DeepID):
         out = net.forward_all(data_1=X)
         print out
         feature1 = np.float64(out['deepid_1'])
-        feature1=np.reshape(feature1,(test_num,160))
+        feature1= np.reshape(feature1,(test_num,160))
         #np.savetxt('feature1.txt', feature1, delimiter=',')
 
         #提取右半部分的特征
@@ -263,10 +265,152 @@ class DeepIDTest(DeepID):
 class Test():
     def a(self):
         print "hello"
+    def __init__(self):
+        # convert Mean to NPY https://github.com/BVLC/caffe/issues/808
+        fin="../DataPrepare/webface/train_mean.binaryproto"
+        fout="./train_mean.npy"
+        blob = caffe.proto.caffe_pb2.BlobProto()
+        data = open( fin , 'rb' ).read()
+        blob.ParseFromString(data)
+        arr = np.array( caffe.io.blobproto_to_array(blob) )
+        out = arr[0]
+        np.save( fout , out )
+
+        self.net = caffe.Classifier("deepID_deploy.prototxt", "snapshot_iter_500000.caffemodel", mean=np.load(fout))
+        caffe.set_mode_gpu()
+
+
+    def read_imagelist(self, filelist):
+        '''
+        @brief：从列表文件中，读取图像数据到矩阵文件中
+        @param： filelist 图像列表文件
+        @return ：4D 的矩阵
+        '''
+        fid=open(filelist)
+        lines=fid.readlines()
+        test_num=len(lines)
+        fid.close()
+        X=np.empty((test_num,3,64,64))
+        i =0
+        for line in lines:
+            word=line.split('\n')
+            filename=word[0]
+            im1=skimage.io.imread(filename,as_grey=False)
+            image =skimage.transform.resize(im1,(64, 64))*255
+            if image.ndim<3:
+                print 'gray:'+filename
+                X[i,0,:,:]=image[:,:]
+                X[i,1,:,:]=image[:,:]
+                X[i,2,:,:]=image[:,:]
+            else:
+                X[i,0,:,:]=image[:,:,0]
+                X[i,1,:,:]=image[:,:,1]
+                X[i,2,:,:]=image[:,:,2]
+            i=i+1
+        return X
+
+    def read_labels(self, label):
+        '''
+        读取标签列表文件
+        '''
+        fin=open(label)
+        lines=fin.readlines()
+        labels=np.empty((len(lines),))
+        k=0;
+        for line in lines:
+            labels[k]=int(line)
+            k=k+1
+        fin.close()
+        return labels
+
+    def calculate_accuracy(self, distance,labels,num):    
+        '''
+        #计算识别率,
+        选取阈值，计算识别率
+        '''    
+        accuracy = []
+        predict = np.empty((num,))
+        threshold = 0.2
+        while threshold <= 0.8 :
+            for i in range(num):
+                if distance[i] >= threshold:
+                     predict[i] =1
+                else:
+                     predict[i] =0
+            predict_right =0.0
+            for i in range(num):
+                if predict[i]==labels[i]:
+                  predict_right = 1.0+predict_right
+            current_accuracy = (predict_right/num)
+            accuracy.append(current_accuracy)
+            threshold=threshold+0.001
+        return np.max(accuracy)
+
+    def inference(self, fn_image_list):
+        X = self.read_imagelist(fn_image_list)
+        test_num=np.shape(X)[0]
+        
+        out = self.net.forward_all(data_1=X)
+        print out
+        feature1 = np.float64(out['deepid_1'])
+        feature1= np.reshape(feature1,(test_num,160))
+        #np.savetxt('feature1.txt', feature1, delimiter=',')
+        return feature1
+
+
+    def draw_roc_curve(self, fpr,tpr,title='cosine',save_name='roc_lfw'):
+        '''
+        画ROC曲线图
+        '''
+        plt.figure()
+        plt.plot(fpr, tpr)
+        plt.plot([0, 1], [0, 1], 'k--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.0])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver operating characteristic using: '+title)
+        plt.legend(loc="lower right")
+    #    plt.show()
+        plt.savefig(save_name+'.png')
+
+    def evaluate(self):
+
+        left_features = self.inference("./lfwcrop_color/left.txt")
+        right_features = self.inference("./lfwcrop_color/right.txt")
+        labels = self.read_labels("./lfwcrop_color/label.txt")
+
+        #计算每个特征之间的距离
+        mt = pw.pairwise_distances(left_features, right_features, metric='cosine')
+        test_num = len(labels)
+        predicts=np.empty((test_num,))
+        for i in range(test_num):
+              predicts[i]=mt[i][i]
+        # 距离需要归一化到0--1,与标签0-1匹配
+        for i in range(test_num):
+                predicts[i]=(predicts[i]-np.min(predicts))/(np.max(predicts)-np.min(predicts))
+
+        accuracy = self.calculate_accuracy(predicts,labels,test_num)
+        print str(accuracy)
+        fpaccu=open("accuracy.txt",'w')
+        fpaccu.write(str(accuracy))
+        fpaccu.close()
+
+        np.savetxt("predicts.txt",predicts)           
+        fpr, tpr, thresholds=sklearn.metrics.roc_curve(labels,predicts)
+
+        np.savetxt(open('thresholds.txt','w'),thresholds)    
+        
+        self.draw_roc_curve(fpr,tpr,title="cosine",save_name="roc.png")
+
+
+
+
 
 def run_test():
     test = Test()
-    test.a()
+    # print test.inference("test_image_list.txt")
+    test.evaluate()
 
 def demo_test(num,itera):
     prj='deepID'

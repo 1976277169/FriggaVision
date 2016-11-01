@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 @authot:李华清
@@ -234,13 +235,12 @@ def write_pairs(pairs_result,savepath):
 
 
 def demo_lfw():
-    caffe_dir='/home/ikode/caffe-master/'
-    pairs=caffe_dir+'data/deepID/pairs.txt'
-    lfwdir=caffe_dir+'data/deepID/lfwcrop_color/faces/'
+    pairs='./pairs.txt'
+    lfwdir='./lfwcrop_color/faces/'
     ext='ppm'
     pairs_result=testdeal(pairs,lfwdir,ext)
-    savepath=caffe_dir+'examples/deepID/lfw_'
-    write_pairs(pairs_result,savepath)   
+    savepath='./lfwcrop_color/'
+    write_pairs(pairs_result,savepath)
 
 
 def grey_pairs():
