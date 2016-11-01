@@ -102,3 +102,4 @@ DataPrepare/be_washed_images.txt
 DataPrepare/CASIA-WebFace*
 DataPrepare/webface/*
 ._*
+FaceIdentification/snapshot*
