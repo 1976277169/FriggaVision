@@ -24,7 +24,7 @@ Network and solver is at FaceIdentification/test1/.Only one pitch and one networ
 
 We use 10000people, and SGD optimization with 500k interation, the training validation accuracy is at 65.5%, which is the same as the paper told.
 
-Use lfwcrop_color, cosine distance.
+Use lfwcrop_color, cosine distance. The result ROC is below, it's bad but working.
 
 ![test1](FaceIdentification/test1_roc_crop_lfw_cosine.png)
 
