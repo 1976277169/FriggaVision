@@ -26,13 +26,14 @@ We use 10000people, and SGD optimization with 500k interation, the training vali
 
 Use lfwcrop_color, cosine distance. The result ROC is below, it's bad but working.
 
-![test1](FaceIdentification/test1_roc_crop_lfw_cosine.png)
+<img src="FaceIdentification/test1_roc_crop_lfw_cosine.png" width="300" />
 
+###test2
 In test1, the testing dataset's face image only contain the face, not as our training cropping, which has a more margin. In test2, we use the [lfw-deepfunneled.tgz](http://vis-www.cs.umass.edu/lfw/lfw-deepfunneled.tgz) dataset, and crop by ourself with DataPrepare's lfw_deepf_crop.py. We got a better ROC.
 
-![test2](FaceIdentification/test2_roc_deepf_selfcrop_cosine.png)
+<img src="FaceIdentification/test2_roc_deepf_selfcrop_cosine.png" width="300" />
 
-TODO
+###test3
 N pitch + Joint Bayesian
 TODO
 
