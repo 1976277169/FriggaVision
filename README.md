@@ -28,11 +28,11 @@ Use lfwcrop_color, cosine distance. The result ROC is below, it's bad but workin
 
 ![test1](FaceIdentification/test1_roc_crop_lfw_cosine.png)
 
-###test2
-Use lfw, not cropped, crop by ourself, with DataPrepare's method. And Joint Bayesian.
-TODO
+In test1, the testing dataset's face image only contain the face, not as our training cropping, which has a more margin. In test2, we use the [lfw-deepfunneled.tgz](http://vis-www.cs.umass.edu/lfw/lfw-deepfunneled.tgz) dataset, and crop by ourself with DataPrepare's lfw_deepf_crop.py. We got a better ROC.
 
-###test3
+![test2](FaceIdentification/test2_roc_deepf_selfcrop_cosine.png)
+
+TODO
 N pitch + Joint Bayesian
 TODO
 

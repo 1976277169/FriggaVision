@@ -376,9 +376,9 @@ class Test():
 
     def evaluate(self):
 
-        left_features = self.inference("./lfwcrop_color/left.txt")
-        right_features = self.inference("./lfwcrop_color/right.txt")
-        labels = self.read_labels("./lfwcrop_color/label.txt")
+        left_features = self.inference("./lfw-deepf-cropped/left.txt")
+        right_features = self.inference("./lfw-deepf-cropped/right.txt")
+        labels = self.read_labels("./lfw-deepf-cropped/label.txt")
 
         #计算每个特征之间的距离
         mt = pw.pairwise_distances(left_features, right_features, metric='cosine')
@@ -392,16 +392,16 @@ class Test():
 
         accuracy = self.calculate_accuracy(predicts,labels,test_num)
         print str(accuracy)
-        fpaccu=open("accuracy.txt",'w')
+        fpaccu=open("lfw-deepf-cropped/accuracy.txt",'w')
         fpaccu.write(str(accuracy))
         fpaccu.close()
 
-        np.savetxt("predicts.txt",predicts)           
+        np.savetxt("lfw-deepf-cropped/predicts.txt",predicts)           
         fpr, tpr, thresholds=sklearn.metrics.roc_curve(labels,predicts)
 
-        np.savetxt(open('thresholds.txt','w'),thresholds)    
+        np.savetxt(open('lfw-deepf-cropped/thresholds.txt','w'),thresholds)    
         
-        self.draw_roc_curve(fpr,tpr,title="cosine",save_name="roc.png")
+        self.draw_roc_curve(fpr,tpr,title="cosine",save_name="lfw-deepf-cropped/roc.png")
 
 
 

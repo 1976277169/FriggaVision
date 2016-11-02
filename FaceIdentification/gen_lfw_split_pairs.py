@@ -236,10 +236,10 @@ def write_pairs(pairs_result,savepath):
 
 def demo_lfw():
     pairs='./pairs.txt'
-    lfwdir='./lfwcrop_color/faces/'
-    ext='ppm'
+    lfwdir='./lfw-deepf-cropped/faces/'
+    ext='jpg'
     pairs_result=testdeal(pairs,lfwdir,ext)
-    savepath='./lfwcrop_color/'
+    savepath='./lfw-deepf-cropped/'
     write_pairs(pairs_result,savepath)
 
 
@@ -247,7 +247,7 @@ def grey_pairs():
     DEEPID='data/deepID_grey/'
     pairs=DEEPID+'pairs.txt'
     lfwdir=DEEPID+'lfwcrop_grey/faces/' 
-    ext='pgm'
+    ext='jpg'
     pairs_result=testdeal(pairs,lfwdir,ext)
     return pairs_result
 

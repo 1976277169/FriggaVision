@@ -104,3 +104,4 @@ DataPrepare/webface/*
 ._*
 FaceIdentification/snapshot*
 FaceIdentification/lfwcrop*
+FaceIdentification/lfw-deepf*
