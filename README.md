@@ -37,11 +37,14 @@ accr = 0.78
 
 When using Joint Bayesian, the result is worse...
 
+accr = 0.74
+
 <img src="FaceIdentification/test2_jb_roc.png" width="300" />
 
 
 ###test3
 N pitch + Joint Bayesian
+hope 90%+
 TODO
 
 ##LISCENSE
