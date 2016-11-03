@@ -1,4 +1,7 @@
-#coding=utf-8
+#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+
+
 import sys
 import numpy as np
 from common import *
