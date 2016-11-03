@@ -4,12 +4,12 @@
 
 import sys
 import numpy as np
-from common import *
+from jb_common import *
 from scipy.io import loadmat
 from sklearn import metrics
 from sklearn.decomposition import PCA
 from sklearn.externals import joblib
-from joint_bayesian import *
+from jb_joint_bayesian import *
 
 
 
@@ -27,6 +27,18 @@ def excute_train(train_data="../data/lbp_WDRef.mat", train_label="../data/id_WDR
 
     data_to_pkl(data_pca, result_fold+"pca_wdref.pkl")
     JointBayesian_Train(data_pca, label, result_fold)
+
+
+def jb_train():
+    print "start jb_train..."
+    features = np.load("data/jbtrain_features.npy")
+    labels = np.load("data/jbtrain_labels.npy")
+
+    print "features", features.shape, "lebels", labels.shape
+
+    JointBayesian_Train(features, labels, "data/")
+    print "DONE"
+
 
 
 def excute_test(pairlist="../data/pairlist_lfw.mat", test_data="../data/lbp_lfw.mat", result_fold="../result/"):
@@ -62,8 +74,23 @@ def excute_test(pairlist="../data/pairlist_lfw.mat", test_data="../data/lbp_lfw.
 
     data_to_pkl({"distance": dist_all, "label": label}, result_fold+"result.pkl")
 
+def get_pairwise_dist(left_features, right_features):
+    with open("data/A.pkl", "rb") as f:
+        A = pickle.load(f)
+    with open("data/G.pkl", "rb") as f:
+        G = pickle.load(f)
+
+
+
+    ret = []
+    for i in xrange(len(left_features)):
+        ret.append(Verify(A, G, left_features[i], right_features[i]))
+
+    return ret
+
 
 if __name__ == "__main__":
-    excute_train()
-    excute_test()
-    excute_performance("../result/result.pkl", -16.9, -16.6, 0.01)
+    # excute_train()
+    # excute_test()
+    # excute_performance("../result/result.pkl", -16.9, -16.6, 0.01)
+    jb_train()

@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 '''
-Create on Tues 2015-11-24
-
-@author: hqli
+生成jbtrain_list的feature并保存，用来joint bayesian 训练。
 '''
-
-#运行前,先将pycaffe安装好
-#运行时在caffe主目录（一般为～/caffe-master）下执行python DeepIDTest.py
 
 import os
 import sklearn
@@ -25,8 +20,7 @@ import caffe
 import sklearn.metrics.pairwise as pw
 
 from DeepID import *
-import jb_train
-# from lfw_test_deal import *
+from lfw_test_deal import *
 
 class DeepIDTest(DeepID):
     pairs=''#pairs.txt的路径
@@ -264,8 +258,6 @@ class DeepIDTest(DeepID):
         DeepIDTest.draw_roc_curve(fpr,tpr,title=metric,save_name=self.roc)
 
 class Test():
-    def a(self):
-        print "hello"
     def __init__(self):
         # convert Mean to NPY https://github.com/BVLC/caffe/issues/808
         fin="../DataPrepare/webface/train_mean.binaryproto"
@@ -347,29 +339,6 @@ class Test():
             threshold=threshold+0.001
         return np.max(accuracy)
 
-    def calculate_accuracy_jb(self, distance,labels,num):    
-        '''
-        #计算识别率,
-        选取阈值，计算识别率
-        '''    
-        accuracy = []
-        predict = np.empty((num,))
-        threshold = 0.0
-        while threshold <= 1.0 :
-            for i in range(num):
-                if distance[i] <= threshold:
-                     predict[i] =0 #0表示一样
-                else:
-                     predict[i] =1 #1表示不同
-            predict_right =0.0
-            for i in range(num):
-                if predict[i]==labels[i]:
-                  predict_right = 1.0+predict_right
-            current_accuracy = (predict_right/num)
-            accuracy.append(current_accuracy)
-            threshold=threshold+0.0001
-        return np.max(accuracy)
-
     def inference(self, fn_image_list):
         X = self.read_imagelist(fn_image_list)
         test_num=np.shape(X)[0]
@@ -398,7 +367,6 @@ class Test():
     #    plt.show()
         plt.savefig(save_name+'.png')
 
-
     def evaluate(self):
 
         left_features = self.inference("./lfw-deepf-cropped/left.txt")
@@ -416,7 +384,7 @@ class Test():
                 predicts[i]=(predicts[i]-np.min(predicts))/(np.max(predicts)-np.min(predicts))
 
         accuracy = self.calculate_accuracy(predicts,labels,test_num)
-        print "Accuracy", str(accuracy)
+        print str(accuracy)
         fpaccu=open("lfw-deepf-cropped/accuracy.txt",'w')
         fpaccu.write(str(accuracy))
         fpaccu.close()
@@ -427,77 +395,9 @@ class Test():
         np.savetxt(open('lfw-deepf-cropped/thresholds.txt','w'),thresholds)    
         
         self.draw_roc_curve(fpr,tpr,title="cosine",save_name="lfw-deepf-cropped/roc.png")
-    
-    def genJbtrainData(self):
-        '''generate face feature data for joint bayesian training'''
-        print "start genJbtrainData..."
-
-        f_image = open('data/jbtrain_image_list.txt', 'w')
-        f_label = open('data/jbtrain_label_list.txt', 'w')
-        labels = []
-
-        with open('../DataPrepare/webface/jbtrain_list.txt', 'r') as f:
-            lines = f.readlines()
-            for l in lines:
-                ww = l.split(' ')
-                if len(ww) > 1:
-                    imagefn = "../DataPrepare/webface/CASIA-WebFace-total-cropped/" + ww[0]
-                    f_image.write(imagefn + '\n')
-                    label = ww[1][:-1] #remove \n 
-                    f_label.write(label + '\n')
-                    labels.append(int(label))
-        f_image.close()
-        f_label.close()
-
-        #features npy
-        features = self.inference("data/jbtrain_image_list.txt")
-        np.save("data/jbtrain_features", features)
-
-        #lebels npy
-        labels = np.array(labels)
-        np.save("data/jbtrain_labels", labels)
-
-        print "DONE"
 
 
-    def jb_evaluate(self):
-        '''evaluate using joint bayesian'''
-        print "start jb_evalate..."
 
-        left_features = self.inference("./lfw-deepf-cropped/left.txt")
-        right_features = self.inference("./lfw-deepf-cropped/right.txt")
-        labels = self.read_labels("./lfw-deepf-cropped/label.txt")
-
-
-        distances = jb_train.get_pairwise_dist(left_features, right_features)
-
-
-        #计算每个特征之间的距离
-        # mt = pw.pairwise_distances(left_features, right_features, metric='cosine')
-        test_num = len(labels)
-        predicts=np.empty((test_num,))
-        for i in range(test_num):
-              predicts[i]=distances[i]
-
-        predicts = predicts*-1.0
-        # 距离需要归一化到0--1,与标签0-1匹配
-        ratio_min = np.min(predicts)
-        ratio_max = np.max(predicts)
-        for i in range(test_num):
-                predicts[i]=(predicts[i]-np.min(predicts))/(np.max(predicts)-np.min(predicts))
-
-        accuracy = self.calculate_accuracy_jb(predicts,labels,test_num)
-        print "Accuracy", str(accuracy), "max_ratio", ratio_max, "min_ratio", ratio_min
-        fpaccu=open("lfw-deepf-cropped/jb_accuracy.txt",'w')
-        fpaccu.write(str(accuracy))
-        fpaccu.close()
-
-        np.savetxt("lfw-deepf-cropped/jb_predicts.txt",predicts)           
-        fpr, tpr, thresholds=sklearn.metrics.roc_curve(labels, predicts)
-
-        np.savetxt(open('lfw-deepf-cropped/jb_thresholds.txt','w'),thresholds)    
-        
-        self.draw_roc_curve(fpr,tpr,title="joint bayesian",save_name="lfw-deepf-cropped/jb_roc")
 
 
 def run_test():
@@ -524,12 +424,4 @@ if __name__=='__main__':
     # num=10000#人数
     # itera=750000#所选模型的迭代次数
     # demo_test(num,itera)
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'jbtest':
-            test = Test()
-            test.jb_evaluate()
-        else:
-            test = Test()
-            test.genJbtrainData()
-    else:
-        run_test()
+    run_test()

@@ -1,1 +1,0 @@
-/home/ikode/caffe-master/build/tools/compute_image_mean /home/ikode/caffe-master/examples/deepID/10000/deepID_10000_train_lmdb /home/ikode/caffe-master/examples/deepID/10000/deepID_10000_mean.binaryproto

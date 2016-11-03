@@ -3,7 +3,7 @@
 
 import sys
 import numpy as np
-from common import *
+from jb_common import *
 from scipy.io import loadmat
 from sklearn import metrics
 from sklearn.decomposition import PCA
@@ -90,10 +90,10 @@ def JointBayesian_Train(trainingset, label, fold = "./"):
         Su = np.cov(u.T,  rowvar=0)
         Sw = np.cov(ep.T, rowvar=0)
         convergence = np.linalg.norm(Sw-oldSw)/np.linalg.norm(Sw)
-        print_info("Iterations-" + str(l) + ": "+ str(convergence))
-        if convergence<1e-6:
-            print "Convergence: ", l, convergence
-            break;
+        print_info("Iterations " + str(l) + ": "+ str(convergence))
+        # if convergence<1e-8:
+            # print "Convergence: ", l, convergence
+            # break;
         oldSw=Sw
 
         if convergence < min_convergence:
@@ -101,12 +101,14 @@ def JointBayesian_Train(trainingset, label, fold = "./"):
             F = np.linalg.pinv(Sw)
             G = -np.dot(np.dot(np.linalg.pinv(2*Su+Sw),Su), F)
             A = np.linalg.pinv(Su+Sw)-(F+G)
-            data_to_pkl(G, fold + "G.pkl")
-            data_to_pkl(A, fold + "A.pkl")
+            # data_to_pkl(G, fold + "G.pkl")
+            # data_to_pkl(A, fold + "A.pkl")
+            print "Update"
 
     F = np.linalg.pinv(Sw)
     G = -np.dot(np.dot(np.linalg.pinv(2*Su+Sw),Su), F)
     A = np.linalg.pinv(Su+Sw) - (F+G)
+
     data_to_pkl(G, fold + "G_con.pkl")
     data_to_pkl(A, fold + "A_con.pkl")
 
