@@ -43,20 +43,21 @@ accr = 0.74
 
 In paper, the No.patch == 1, accr will got 89%.
 
-When apply LFW with the same align-crop routine as we did to the webface training data, in cosine:
+When apply LFW with the same align-crop routine as we did to the webface training data:
 
-accr =  0.837065508021
+With cosine accr =  0.837065508021
 
-<img src="test2_3_with_webface_aligncrop_cosine_roc.png" width="300" />
+<img src="FaceIdentification/test2_3_with_webface_aligncrop_cosine_roc.png" width="300" />
 
-accr = 0.795788770053
+With jb accr = 0.795788770053
 
-<img src="test2_3_jb_roc.png" width="300" />
+<img src="FaceIdentification/test2_3_jb_roc.png" width="300" />
 
 ###test3
-N pitch + Joint Bayesian
-hope 90%+
 TODO
+N pitch + Joint Bayesian >> 
+hope 90%+
+
 
 ##LISCENSE
 
