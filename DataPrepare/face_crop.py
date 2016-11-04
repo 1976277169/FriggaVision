@@ -57,7 +57,7 @@ def affineTrans(img_src, img_des, rect, marks):
 def align_crop():
     #depreted
 
-    f_result = open('align_result.txt', 'r')
+    f_result = open('washed_align_result.txt', 'r')
     align_result = f_result.readlines()
     f_result.close()
 
@@ -80,7 +80,8 @@ def align_crop():
                      [float(ww[11]),float(ww[12])], \
                      [float(ww[13]),float(ww[14])] ]
             des_size = (64,64)
-            simiTransCrop(img_src, img_des, rect, marks, des_size)
+            # simiTransCrop(img_src, img_des, rect, marks, des_size)
+            affineTrans(img_src, img_des, rect, marks)
         if curr % 7 == 0:
             sys.stdout.write("\rcropping(%d/%d) %f" % (curr, total, curr * 1.0 / total))
             sys.stdout.flush()
@@ -95,7 +96,7 @@ def align_save():
     dir_prefix = "aligned"
     os.system("rm -rf '%s'" % dir_prefix)
     os.mkdir(dir_prefix)
-    print "start cropping ... "
+    print "start align saving ... "
     total = len(align_result)
     curr = 0
     for line in align_result:
@@ -118,4 +119,4 @@ def align_save():
 
 
 if __name__ == "__main__":
-    align_crop()
+    align_save()
