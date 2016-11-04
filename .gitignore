@@ -108,3 +108,4 @@ FaceIdentification/lfw-deepf*
 FaceIdentification/data
 *.npy
 DataPrepare/webface-tiny/*
+DataPrepare/lfw-deepfunneled

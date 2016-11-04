@@ -236,10 +236,10 @@ def write_pairs(pairs_result,savepath):
 
 def demo_lfw():
     pairs='./pairs.txt'
-    lfwdir='./lfw-deepf-cropped/faces/'
+    lfwdir='./lfw-deepf-alignc/faces/'
     ext='jpg'
     pairs_result=testdeal(pairs,lfwdir,ext)
-    savepath='./lfw-deepf-cropped/'
+    savepath='./lfw-deepf-alignc/'
     write_pairs(pairs_result,savepath)
 
 

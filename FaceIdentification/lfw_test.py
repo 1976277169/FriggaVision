@@ -401,9 +401,9 @@ class Test():
 
     def evaluate(self):
 
-        left_features = self.inference("./lfw-deepf-cropped/left.txt")
-        right_features = self.inference("./lfw-deepf-cropped/right.txt")
-        labels = self.read_labels("./lfw-deepf-cropped/label.txt")
+        left_features = self.inference("./lfw-deepf-alignc/left.txt")
+        right_features = self.inference("./lfw-deepf-alignc/right.txt")
+        labels = self.read_labels("./lfw-deepf-alignc/label.txt")
 
         #计算每个特征之间的距离
         mt = pw.pairwise_distances(left_features, right_features, metric='cosine')
@@ -417,16 +417,16 @@ class Test():
 
         accuracy = self.calculate_accuracy(predicts,labels,test_num)
         print "Accuracy", str(accuracy)
-        fpaccu=open("lfw-deepf-cropped/accuracy.txt",'w')
+        fpaccu=open("lfw-deepf-alignc/accuracy.txt",'w')
         fpaccu.write(str(accuracy))
         fpaccu.close()
 
-        np.savetxt("lfw-deepf-cropped/predicts.txt",predicts)           
+        np.savetxt("lfw-deepf-alignc/predicts.txt",predicts)           
         fpr, tpr, thresholds=sklearn.metrics.roc_curve(labels,predicts)
 
-        np.savetxt(open('lfw-deepf-cropped/thresholds.txt','w'),thresholds)    
+        np.savetxt(open('lfw-deepf-alignc/thresholds.txt','w'),thresholds)    
         
-        self.draw_roc_curve(fpr,tpr,title="cosine",save_name="lfw-deepf-cropped/roc.png")
+        self.draw_roc_curve(fpr,tpr,title="cosine",save_name="lfw-deepf-alignc/roc.png")
     
     def genJbtrainData(self):
         '''generate face feature data for joint bayesian training'''
@@ -464,9 +464,9 @@ class Test():
         '''evaluate using joint bayesian'''
         print "start jb_evalate..."
 
-        left_features = self.inference("./lfw-deepf-cropped/left.txt")
-        right_features = self.inference("./lfw-deepf-cropped/right.txt")
-        labels = self.read_labels("./lfw-deepf-cropped/label.txt")
+        left_features = self.inference("./lfw-deepf-alignc/left.txt")
+        right_features = self.inference("./lfw-deepf-alignc/right.txt")
+        labels = self.read_labels("./lfw-deepf-alignc/label.txt")
 
 
         distances = jb_train.get_pairwise_dist(left_features, right_features)
@@ -488,16 +488,16 @@ class Test():
 
         accuracy = self.calculate_accuracy_jb(predicts,labels,test_num)
         print "Accuracy", str(accuracy), "max_ratio", ratio_max, "min_ratio", ratio_min
-        fpaccu=open("lfw-deepf-cropped/jb_accuracy.txt",'w')
+        fpaccu=open("lfw-deepf-alignc/jb_accuracy.txt",'w')
         fpaccu.write(str(accuracy))
         fpaccu.close()
 
-        np.savetxt("lfw-deepf-cropped/jb_predicts.txt",predicts)           
+        np.savetxt("lfw-deepf-alignc/jb_predicts.txt",predicts)           
         fpr, tpr, thresholds=sklearn.metrics.roc_curve(labels, predicts)
 
-        np.savetxt(open('lfw-deepf-cropped/jb_thresholds.txt','w'),thresholds)    
+        np.savetxt(open('lfw-deepf-alignc/jb_thresholds.txt','w'),thresholds)    
         
-        self.draw_roc_curve(fpr,tpr,title="joint bayesian",save_name="lfw-deepf-cropped/jb_roc")
+        self.draw_roc_curve(fpr,tpr,title="joint bayesian",save_name="lfw-deepf-alignc/jb_roc")
 
 
 def run_test():
