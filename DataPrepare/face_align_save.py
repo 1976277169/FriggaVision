@@ -10,6 +10,9 @@ import skimage.transform
 import skimage.io
 import numpy as np
 
+'''
+在初次align和wash之后，根据align把图片对齐成标准的姿态，为下一步切分不同pitch做准备。
+'''
 
 ALIGN_Y_OFF = 0
 ALIGN_TARGET = np.array([[93.0, 109.0 + ALIGN_Y_OFF],[157.0, 109.0 + ALIGN_Y_OFF],[125.0, 172.0 + ALIGN_Y_OFF]])
@@ -87,13 +90,13 @@ def align_crop():
             sys.stdout.flush()
 
 
-def align_save():
+def align_save(align_result_fn, target_dir):
     '''产生最初的aligned的图片，为后来的切分做准备'''
-    f_result = open('washed_align_result.txt', 'r')
+    f_result = open(align_result_fn, 'r')
     align_result = f_result.readlines()
     f_result.close()
 
-    dir_prefix = "aligned"
+    dir_prefix = target_dir
     os.system("rm -rf '%s'" % dir_prefix)
     os.mkdir(dir_prefix)
     print "start align saving ... "
@@ -120,4 +123,9 @@ def align_save():
 
 
 if __name__ == "__main__":
-    align_save()
+    if len(sys.argv) == 3:
+        align_save(sys.argv[1], sys.argv[2])
+    else:
+        print "USAGE %s washed_align_result.txt  dir_aligned" % sys.argv[0]
+
+
