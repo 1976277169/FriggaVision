@@ -107,3 +107,4 @@ FaceIdentification/lfwcrop*
 FaceIdentification/lfw-deepf*
 FaceIdentification/data
 *.npy
+DataPrepare/webface-tiny/*

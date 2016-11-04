@@ -1,5 +1,5 @@
 #(c) 2016 chenbingfeng
-target_dir=webface-tiny
+target_dir=lfw-deepfunnel
 echo "generate image list"
 find "$target_dir" -name "*.jpg" > image_list.txt
 
