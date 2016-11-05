@@ -22,7 +22,7 @@ After above steps, you should get webface dir like this:
 
 ###Many Patch:
 
-face_align.sh  >> face_wash.py >> face_align_save.py >> face_align.sh >> face_crop.py >> dataset_div.py
+face_align.sh  >> face_wash.py >> face_align_save.py >> face_align.sh >> face_wash.py >> face_multi_crop.py >> dataset_div.py
 
 ###Result:
 
