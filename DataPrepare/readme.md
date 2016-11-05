@@ -19,6 +19,11 @@ After above steps, you should get webface dir like this:
 
 ![result](_res/result.png)
 
+
+###Many Patch:
+
+face_align.sh  >> face_wash.py >> face_align_save.py >> face_align.sh >> face_crop.py >> dataset_div.py
+
 ###Result:
 
 ![origin](_res/020-origin.jpg) ==>
