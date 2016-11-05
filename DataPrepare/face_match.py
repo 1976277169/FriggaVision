@@ -25,19 +25,19 @@ def main():
                 for l in origins:
                     ww =  l.split(' ')
                     if len(ww) > 2:
-                        ffn = os.path.basename(ww[0])
+                        ffn = ww[0][-15:]
                         tdict[ffn] = 1
                 
                 contents = f_content.readlines()
-                for l in origins:
+                for l in contents:
                     ww = l.split(' ')
                     if len(ww) > 2:
-                        ffn = os.path.basename(ww[0])
+                        ffn = ww[0][-15:]
                         if tdict.has_key(ffn):
                             f_out.write(l)
                         else:
                             cnt_deleted = cnt_deleted + 1
-    print "deleted ", cnt_deleted
+    print len(origins), len(tdict), len(contents), "deleted ", cnt_deleted
     print "DONE"
 
 if __name__ == "__main__":
