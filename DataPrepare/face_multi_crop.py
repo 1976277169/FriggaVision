@@ -64,9 +64,17 @@ def crop(img_src, img_des, position, width):
     img_obj = skimage.io.imread(img_src)
     y0, y1, x0, x1 = ir(position[1]-hw), ir(position[1]+hw), ir(position[0]-hw), ir(position[0]+hw)
     if x0 < 0 or y0 < 0:
-        print "minus0"
+        print "minus0", img_des
     if x1 >249 or y1 > 249:
         print "bigger249", img_des
+    if x0 < 0:
+        x0 = 0
+    if y0 < 0:
+        y0 = 0
+    if x1 > 249:
+        x1 = 249
+    if y1 > 249:
+        y1 = 249
     img_crop = img_obj[y0:y1, x0:x1]# 注意网上很多都把x放在前面，实际是错的
     skimage.io.imsave(img_des, img_crop)
 
