@@ -29,9 +29,9 @@ def isValidView(marks):
 
     return dis < EYE_DISTANC_THRESHOLD
 
-def main():
+def main(fnin, fnout):
 
-    f_result = open('align_result.txt', 'r')
+    f_result = open(fnin, 'r')
     align_result = f_result.readlines()
     f_result.close()
 
@@ -40,8 +40,7 @@ def main():
     curr = 0
     cwash = 0
 
-    f_washed = open('be_washed_images.txt', 'w')
-    f_survivaled = open('washed_align_result.txt', 'w')
+    f_survivaled = open(fnout, 'w')
 
     for line in align_result:
         ww = line.split(' ')
@@ -55,16 +54,17 @@ def main():
             if isValidView(marks):
                 f_survivaled.write(line)
             else:
-                f_washed.write(line )
                 cwash = cwash + 1
         
         if curr % 7 == 0:
             sys.stdout.write("\rwashing(%d/%d/%d)  %f" % (cwash, curr, total,  curr * 1.0 / total))
             sys.stdout.flush()
 
-    f_washed.close()
     f_survivaled.close()
-
+    print "DONE"
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2])
+    else:
+        print "USAGE %s intput_align_result washed_align_result" % sys.argv[0]
