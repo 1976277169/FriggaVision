@@ -46,6 +46,9 @@ def div_data(datapath, people_num, train_fn, test_fn, jbtrain_fn):
         fid_jbtrain.close()
 
 if __name__=='__main__':
-
-    div_data("webface/CASIA-WebFace-total-cropped", 10500, "webface/train_list.txt", "webface/test_list.txt", "webface/jbtrain_list.txt")
+    if len(sys.argv) == 5:
+        # div_data("webface/CASIA-WebFace-total-cropped", 10500, "webface/train_list.txt", "webface/test_list.txt", "webface/jbtrain_list.txt")
+        div_data(sys.argv[1], 10500, sys.argv[2], sys.argv[3], sys.argv[4])
+    else:
+        print "USAGE %s webface_image_dir fn_train_list fn_validation_list fn_jbtrain_list"
 
