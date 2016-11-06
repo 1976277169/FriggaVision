@@ -6,8 +6,8 @@ base_dir=$1
 data_dir=$2
 
 echo "gen_lmdb_imgmean$base_dir $data_dir"
-# rm -rf "base_dir/train_lmdb"
-# rm -rf ./webface/test_lmdb
+rm -rf "$base_dir/train_lmdb"
+rm -rf "$base_dir/validation_lmdb"
 
 # mkdir ./webface/train_lmdb
 # mkdir ./webface/test_lmdb

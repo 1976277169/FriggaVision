@@ -3,6 +3,7 @@
 #(C) 2016 chenbingfeng
 
 import os
+import sys
 
 def div_data(datapath, people_num, train_fn, test_fn, jbtrain_fn):
         #train_fn  deepID training , test_fn deepID validation , jbtrain_fn joint bayesian training
